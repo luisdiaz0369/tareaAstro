@@ -3,12 +3,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogPost from '../../components/BlogPost.astro';
 
 export async function getStaticPaths() {
-  // 🔥 Traer todos los posts correctamente
+
   const allPosts = Object.values(
     import.meta.glob('/src/pages/posts/*.md', { eager: true })
   );
 
-  // 🔥 Obtener todos los tags únicos (seguro contra undefined)
+  
   const uniqueTags = [
     ...new Set(
       allPosts
@@ -17,14 +17,13 @@ export async function getStaticPaths() {
     )
   ];
 
-  // 🔥 Crear rutas dinámicas por tag
   return uniqueTags.map((tag) => {
     const filteredPosts = allPosts.filter((post: any) =>
       post.frontmatter.tags?.includes(tag)
     );
 
     return {
-      params: { tag: encodeURIComponent(tag) }, // 👈 importante para espacios
+      params: { tag: encodeURIComponent(tag) },
       props: { posts: filteredPosts },
     };
   });
